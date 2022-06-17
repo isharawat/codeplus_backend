@@ -46,12 +46,11 @@ app.post('./register',(req,res)=>{
 // For posts
 
 app.post('/add-posts', async(req,res) => {
- 
   const newpost = new Post(req.body);
   try{
       await newpost.save()
       res.status(201).json({
-          status: 'Success',
+          status: 'Posted Successfully',
           data : {
               newpost
           }
@@ -75,7 +74,7 @@ app.get('/get-posts', async(req,res) => {
       })
   }catch(err){
       res.status(500).json({
-          status: 'Failed',
+          status: 'Failed to load posts due to internal server error',
           message : err
       })
   }
@@ -88,13 +87,16 @@ app.patch('/update-post/:id', async (req,res) => {
     })
   try{
       res.status(200).json({
-          status : 'Success',
+          status : 'Post Updated Successfully',
           data : {
             updatedposts
           }
         })
   }catch(err){
-      console.log(err)
+    res.status(500).json({
+        status: 'Failed to Update post due to internal server error',
+        message : err
+    })
   }
 })
 
@@ -103,12 +105,12 @@ app.delete('/delete-post/:id', async(req,res) => {
   
   try{
     res.status(204).json({
-        status : 'Success',
+        status : 'Successfully deleted',
         data : {}
     })
   }catch(err){
       res.status(500).json({
-          status: 'Failed',
+          status: 'Failed to delete the post',
           message : err
       })
   }
@@ -146,7 +148,7 @@ app.get('/get-questions', async (req,res) => {
     })
 }catch(err){
     res.status(500).json({
-        status: 'Failed',
+        status: 'Failed to fetch the questions.',
         message : err
     })
 }
@@ -159,13 +161,16 @@ app.patch('/update-question/:id', async (req,res) => {
       })
     try{
         res.status(200).json({
-            status : 'Success',
+            status : 'Successfully updated the question',
             data : {
               updatedquestions
             }
           })
     }catch(err){
-        console.log(err)
+        res.status(500).json({
+            status: 'Failed to update the question.',
+            message : err
+        })
     }
 })
 
@@ -175,12 +180,12 @@ app.delete('/delete-question/:id', async(req,res) => {
   
   try{
     res.status(204).json({
-        status : 'Success',
+        status : 'Successfully deleted',
         data : {}
     })
   }catch(err){
       res.status(500).json({
-          status: 'Failed',
+          status: 'Failed to delete the question',
           message : err
       })
   }

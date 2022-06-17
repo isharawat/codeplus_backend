@@ -5,6 +5,10 @@ const questionSchema = new mongoose.Schema({
         type : String,
         required : true
     },
+    url:{
+        type : String,
+        required : true
+    },
     points: {
         type : Number,
         required : true

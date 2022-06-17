@@ -8,7 +8,12 @@ const postSchema = new mongoose.Schema({
     body : {
         type : String,
         required : true
-    }    
+    },
+    comments : [{           
+            comment : String,
+            person : String
+        }
+    ]
 })
 
 const Post = mongoose.model('Post',postSchema)
