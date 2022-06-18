@@ -12,7 +12,7 @@ require('./db/conn');
 
 const Post = require('./models/Post');
 // require model
-const User = require('./models/userSchema');
+const User = require('./models/User');
 
 const Question = require('./models/Question');
 
@@ -20,22 +20,38 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 // Registration
-app.post('./register',(req,res)=>{
-    try{
-        const username = req.body.username;
-        const email = req.body.email;
-        const password = req.body.password;
-        const createUser= new User({
-            username : username,
-            email : email,
-            password : password
-        });
-        
-        res.status(200).send("Registered");
-    }
-    catch(error){
-        res.status(400).send(error)
-    }
+app.post('./register',async(req,res)=>{
+    const email =req.body.email;
+    console.log(req.body);
+   await User.findOne({email:email},(err,user)=>{
+         if(user){
+            res.send({message:"user already exist"})
+        }else {
+            const user = new User(req.body);
+             user.save(err=>{
+                if(err){
+                    res.send(err)
+                }else{
+                    res.send({message:"sucessfull"})
+                }
+            })
+        }
+    })
+})
+
+app.post('./login',(req,res)=>{
+    const {email,password} =req.body;
+    User.findOne({email:email},(err,user)=>{
+        if(user){
+           if(password === user.password){
+               res.send({message:"Logged in sucessfully",user:user})
+           }else{
+               res.send({message:"wrong credentials"})
+           }
+        }else{
+            res.send({message: "You are not registered"})
+        }
+    })
 })
 
 
