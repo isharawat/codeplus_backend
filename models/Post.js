@@ -13,7 +13,12 @@ const postSchema = new mongoose.Schema({
             comment : String,
             person : String
         }
-    ]
+    ],
+    name:{
+        type : String,
+        required:true
+    },
+    
 })
 
 const Post = mongoose.model('Post',postSchema)
