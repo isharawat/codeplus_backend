@@ -12,7 +12,7 @@ require('./db/conn');
 
 const Post = require('./models/Post');
 // require model
-const User = require('./models/User');
+var User = require('./models/User');
 
 const Question = require('./models/Question');
 
@@ -20,29 +20,40 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 // Registration
-app.post('./register',async(req,res)=>{
-    const email =req.body.email;
+app.post('/register',async(req,res)=>{
     console.log(req.body);
-   await User.findOne({email:email},(err,user)=>{
-         if(user){
-            res.send({message:"user already exist"})
-        }else {
-            const user = new User(req.body);
-             user.save(err=>{
-                if(err){
-                    res.send(err)
-                }else{
-                    res.send({message:"sucessfull"})
-                }
-            })
-        }
+    const emailId =req.body.emailId;
+    console.log(req.body);
+    const user = await User.findOne({emailId});
+    if(user) {
+        res.status(403).json({
+            message: "User already exists"
+        })
+    }
+    else{
+        const user = new User(req.body)
+        user.save(function(err,result){
+            if (err){
+                console.log(err);
+            }
+            else{
+                console.log(result)
+            }
+        })
+    res.status(201).json({
+        message: "User created"
     })
+    }
 })
 
-app.post('./login',(req,res)=>{
-    const {email,password} =req.body;
-    User.findOne({email:email},(err,user)=>{
+//login
+app.post('/login',(req,res)=>{
+    const {emailId,password} =req.body;
+    //console.log(emailId,password)
+     User.findOne({emailId}).then(user=>{
+       // console.log(user)
         if(user){
+            
            if(password === user.password){
                res.send({message:"Logged in sucessfully",user:user})
            }else{
@@ -51,10 +62,32 @@ app.post('./login',(req,res)=>{
         }else{
             res.send({message: "You are not registered"})
         }
+
     })
 })
 
 
+// update
+app.patch('/editdetails/:id', async (req,res) => {
+    console.log(req.body)
+    const updateduser = await User.findByIdAndUpdate(req.params.id,req.body,{
+        new : true,
+        runValidators : true
+      })
+    try{
+        res.status(200).json({
+            status : 'Successfully updated the user',
+            data : {
+              updateduser
+            }
+          })
+    }catch(err){
+        res.status(500).json({
+            status: 'Failed to update the user.',
+            message : err
+        })
+    }
+})
 
 
 
@@ -197,6 +230,7 @@ app.delete('/delete-question/:id', async(req,res) => {
   try{
     res.status(204).json({
         status : 'Successfully deleted',
+
         data : {}
     })
   }catch(err){
