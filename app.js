@@ -176,7 +176,7 @@ app.post('/add-discussion', async(req,res) => {
         res.status(201).json({
             status: 'Doubt Posted Successfully',
             data : {
-                newpost
+                newdiscussion
             }
         })
     }catch(err){
@@ -201,6 +201,25 @@ app.post('/add-discussion', async(req,res) => {
             status: 'Failed to load doubts due to internal server error',
             message : err
         })
+    }
+  })
+  app.patch('/update-discussions/:id', async (req,res) => {
+    const discussions = await Discussion.findByIdAndUpdate(req.params.id,req.body,{
+        new : true,
+        runValidators : true
+      })
+    try{
+        res.status(200).json({
+            status : 'Post Updated Successfully',
+            data : {
+              discussions
+            }
+          })
+    }catch(err){
+      res.status(500).json({
+          status: 'Failed to Update post due to internal server error',
+          message : err
+      })
     }
   })
 
@@ -237,6 +256,26 @@ app.post('/add-women-post', async(req,res) => {
             status: 'Failed to load posts due to internal server error',
             message : err
         })
+    }
+  })
+
+  app.patch('/women-update-post/:id', async (req,res) => {
+    const updatedwomenposts = await WomenPost.findByIdAndUpdate(req.params.id,req.body,{
+        new : true,
+        runValidators : true
+      })
+    try{
+        res.status(200).json({
+            status : 'Post Updated Successfully',
+            data : {
+              updatedwomenposts
+            }
+          })
+    }catch(err){
+      res.status(500).json({
+          status: 'Failed to Update post due to internal server error',
+          message : err
+      })
     }
   })
 
