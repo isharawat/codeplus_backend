@@ -13,7 +13,8 @@ require('./db/conn');
 const Post = require('./models/Post');
 // require model
 var User = require('./models/User');
-
+const Discussion=require('./models/Discussion');
+const WomenPost=require('./models/WomenPost');
 const Question = require('./models/Question');
 
 app.get('/', (req, res) => {
@@ -92,7 +93,7 @@ app.patch('/editdetails/:id', async (req,res) => {
 
 
 
-// For posts
+// For posts of announcement channel
 
 app.post('/add-posts', async(req,res) => {
   const newpost = new Post(req.body);
@@ -165,6 +166,81 @@ app.delete('/delete-post/:id', async(req,res) => {
   }
 })
 
+
+//For Post of Discussion Channel
+
+app.post('/add-discussion', async(req,res) => {
+    const newdiscussion = new Discussion(req.body);
+    try{
+        await newdiscussion.save()
+        res.status(201).json({
+            status: 'Doubt Posted Successfully',
+            data : {
+                newpost
+            }
+        })
+    }catch(err){
+        res.status(500).json({
+            status: 'Failed',
+            message : err
+        })
+    }
+  })
+  
+  app.get('/get-discussions', async(req,res) => {
+    const discussions = await Discussion.find({})
+    try{
+        res.status(201).json({
+            status: 'Success',
+            data : {
+                discussions
+            }
+        })
+    }catch(err){
+        res.status(500).json({
+            status: 'Failed to load doubts due to internal server error',
+            message : err
+        })
+    }
+  })
+
+// For post of Women Community Channel
+app.post('/add-women-post', async(req,res) => {
+    const newWomenPost = new WomenPost(req.body);
+    try{
+        await newWomenPost.save()
+        res.status(201).json({
+            status: 'Posted Successfully',
+            data : {
+                newpost
+            }
+        })
+    }catch(err){
+        res.status(500).json({
+            status: 'Failed',
+            message : err
+        })
+    }
+  })
+  
+  app.get('/get-women-posts', async(req,res) => {
+    const womenposts = await WomenPost.find({})
+    try{
+        res.status(201).json({
+            status: 'Success',
+            data : {
+                womenposts
+            }
+        })
+    }catch(err){
+        res.status(500).json({
+            status: 'Failed to load posts due to internal server error',
+            message : err
+        })
+    }
+  })
+
+  
 //Questions
 
 app.post('/add-question', async(req,res) => {
