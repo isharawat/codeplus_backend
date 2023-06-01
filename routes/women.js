@@ -6,11 +6,11 @@ const WomenPost=require('../models/WomenPost');
 router.post('/add-women-post', loginCheck, async(req,res) => {
     const newWomenPost = new WomenPost(req.body);
     try{
-        await newWomenPost.save()
+        await newWomenPost.save();
         res.status(201).json({
             status: 'Posted Successfully',
             data : {
-                newpost
+                newWomenPost
             }
         })
     }catch(err){

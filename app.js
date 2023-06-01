@@ -12,7 +12,7 @@ app.use(cors())
 app.use('/auth',authRouter)
 app.use('/posts',postRouter)
 app.use('/discussion',discussRouter)
-app.use('/quesions',quesRouter)
+app.use('/questions',quesRouter)
 app.use('/women-section', womenRouter)
 
 const port = 3001;
