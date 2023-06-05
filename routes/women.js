@@ -21,7 +21,7 @@ router.post('/add-women-post', loginCheck, async(req,res) => {
     }
   })
   
-  router.get('/get-women-posts', loginCheck, async(req,res) => {
+  router.get('/get-women-posts', async(req,res) => {
     const womenposts = await WomenPost.find({})
     try{
         res.status(201).json({
