@@ -6,12 +6,25 @@ const dataSchema=new mongoose.Schema({
         type: String,
         unique: true
     },
+    admin:{
+        type:String,
+        require:true
+    },
     questions: [{           
             url : String,
+            rating: Number,
+            name: String,
             points : Number,
         }
     ],
-    
+    user:[{
+      //for future  userId:String,
+        codeForces:{
+            type:String,
+            unique:true
+        },
+        points:Number
+    }]
     
 })
 
