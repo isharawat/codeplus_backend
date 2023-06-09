@@ -70,4 +70,13 @@ router.post("/getuser", loginCheck, async (req, res) => {
     res.status(500).json("Internal server Error")
   }
 })
+router.get("/getAllUsers", loginCheck, async (req, res) => {
+  try {
+    const user = await User.find({});
+    res.json(user)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json("Internal server Error")
+  }
+})
 module.exports = router;

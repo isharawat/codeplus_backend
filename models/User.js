@@ -21,6 +21,10 @@ const userSchema=new mongoose.Schema({
         type: String,
         required: true
     },
+    points:{
+        type: Number,
+        default: 0,
+    },
     leetcode:{
         type: String,
         required: true
@@ -31,7 +35,6 @@ const userSchema=new mongoose.Schema({
     },
     atCoder:{
         type: String,
-        required: true
     },
     hackerEarth:{
         type: String,
