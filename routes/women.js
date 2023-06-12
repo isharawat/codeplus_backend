@@ -10,7 +10,7 @@ router.post('/add-women-post', loginCheck, async(req,res) => {
         res.status(201).json({
             status: 'Posted Successfully',
             data : {
-                newpost
+                newWomenPost
             }
         })
     }catch(err){
