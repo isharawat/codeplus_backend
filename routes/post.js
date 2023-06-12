@@ -21,7 +21,7 @@ router.post('/add-posts',loginCheck, async(req,res) => {
     }
   })
   
-  router.get('/get-posts',loginCheck, async(req,res) => {
+  router.get('/get-posts', async(req,res) => {
     const posts = await Post.find({})
     try{
         res.status(201).json({
@@ -39,11 +39,12 @@ router.post('/add-posts',loginCheck, async(req,res) => {
   })
   
   router.patch('/update-post/:id', loginCheck, async (req,res) => {
-    const updatedposts = await Post.findByIdAndUpdate(req.params.id,req.body,{
+    
+    try{
+      const updatedposts = await Post.findByIdAndUpdate(req.params.id,req.body,{
         new : true,
         runValidators : true
       })
-    try{
         res.status(200).json({
             status : 'Post Updated Successfully',
             data : {
@@ -59,9 +60,10 @@ router.post('/add-posts',loginCheck, async(req,res) => {
   })
   
   router.delete('/delete-post/:id',loginCheck, async(req,res) => {
-    await Post.findByIdAndDelete(req.params.id)
+    
     
     try{
+      await Post.findByIdAndDelete(req.params.id)
       res.status(204).json({
           status : 'Successfully deleted',
           data : {}

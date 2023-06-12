@@ -6,6 +6,7 @@ const postRouter=require('./routes/post');
 const discussRouter=require('./routes/discuss');
 const quesRouter=require('./routes/ques');
 const womenRouter=require('./routes/women');
+const lockoutRouter=require('./routes/data');
 app.use(express.json())
 app.use(cors())
 //routes
@@ -14,6 +15,7 @@ app.use('/posts',postRouter)
 app.use('/discussion',discussRouter)
 app.use('/questions',quesRouter)
 app.use('/women-section', womenRouter)
+app.use('/lockoutbot', lockoutRouter)
 
 const port = 3001;
 const dotenv= require('dotenv');

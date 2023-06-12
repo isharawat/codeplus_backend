@@ -67,10 +67,11 @@ router.post('/add-question',loginCheck, async(req,res) => {
     await Question.findByIdAndDelete(req.params.id)
     
     try{
+        const questions= await Question.find({});
       res.status(204).json({
           status : 'Successfully deleted',
   
-          data : {}
+          data : questions,
       })
     }catch(err){
         res.status(500).json({
