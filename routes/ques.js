@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router();
 const Question = require('../models/Question');
+const loginCheck = require('../middleware/loginCheck');
 
   
 //Questions
 
-router.post('/add-question', async(req,res) => {
+router.post('/add-question',loginCheck, async(req,res) => {
   
     const newquestion = new Question(req.body)
     try{
@@ -24,7 +25,7 @@ router.post('/add-question', async(req,res) => {
     }
   })
   
-  router.get('/get-questions', async (req,res) => {
+  router.get('/get-questions',loginCheck,  async (req,res) => {
     const questions= await Question.find({})
     try{
       res.status(201).json({
@@ -41,7 +42,7 @@ router.post('/add-question', async(req,res) => {
   }
   })
   
-  router.patch('/update-question/:id', async (req,res) => {
+  router.patch('/update-question/:id',loginCheck,  async (req,res) => {
       const updatedquestions = await Question.findByIdAndUpdate(req.params.id,req.body,{
           new : true,
           runValidators : true
@@ -62,7 +63,7 @@ router.post('/add-question', async(req,res) => {
   })
   
   
-  router.delete('/delete-question/:id', async(req,res) => {
+  router.delete('/delete-question/:id',loginCheck,  async(req,res) => {
     await Question.findByIdAndDelete(req.params.id)
     
     try{
